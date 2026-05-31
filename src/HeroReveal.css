@@ -1,0 +1,177 @@
+/* ---------- hover-reveal hero (full-screen first page) ---------- */
+.reveal-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  margin: 0;
+  padding: 0;
+  color: var(--hero-fg, #efe9d8);
+}
+
+/* the stage fills the whole first viewport and overlays the fixed background.
+   The two photos share the same 16:9 frame and are cropped identically by
+   object-fit: cover, so the face stays locked even when the screen isn't 16:9. */
+.reveal {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* visible focus ring for keyboard users */
+.reveal:focus-visible {
+  outline: 2px solid var(--hero-fg, #efe9d8);
+  outline-offset: -4px;
+}
+
+/* gradient scrims keep the cream nav text + scroll cue readable over the photo */
+.reveal-scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.reveal-scrim-top {
+  top: 0;
+  height: 30vh;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent);
+}
+.reveal-scrim-bottom {
+  bottom: 0;
+  height: 28vh;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+}
+
+/* both images: identical size, stacked, face locked in place (never scaled) */
+.reveal-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+}
+
+/* animatable spotlight radius — @property lets the mask grow/shrink smoothly.
+   inherits: true so the mask AND the ring read the same value off .reveal. */
+@property --r {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+.reveal {
+  --r: 0px;
+  transition: --r 0.3s ease;
+}
+/* pointer over the stage → grow the spotlight */
+.reveal.is-active {
+  --r: clamp(120px, 16vw, 240px);
+}
+
+/* the revealed layer is fully painted but clipped to a soft circle that
+   follows the pointer (--mx/--my set from JS). Radius is 0 by default, so
+   only jacket.jpg shows until the pointer enters. */
+.reveal-top {
+  -webkit-mask-image: radial-gradient(
+    circle var(--r) at var(--mx, 50%) var(--my, 50%),
+    #000 58%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: radial-gradient(
+    circle var(--r) at var(--mx, 50%) var(--my, 50%),
+    #000 58%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* white ring tracing the spotlight boundary, centered on the pointer */
+.reveal-ring {
+  position: absolute;
+  left: var(--mx, 50%);
+  top: var(--my, 50%);
+  width: calc(var(--r) * 1.55);
+  height: calc(var(--r) * 1.55);
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.reveal.is-active .reveal-ring {
+  opacity: 1;
+}
+
+/* keyboard full reveal → drop the mask and hide the boundary ring */
+.reveal.is-forced .reveal-top {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.reveal.is-forced .reveal-ring {
+  opacity: 0;
+}
+
+/* ---------- caption that swaps text ---------- */
+.reveal-caption {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  z-index: 3;
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+.reveal-caption span {
+  display: block;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal-caption-top {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  transform: translateY(6px);
+}
+.reveal.is-active .reveal-caption-base,
+.reveal.is-forced .reveal-caption-base {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+.reveal.is-active .reveal-caption-top,
+.reveal.is-forced .reveal-caption-top {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- reduced motion: snap the spotlight, no easing ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; }
+  .reveal-caption span { transition: opacity 0.4s ease; }
+  .reveal-caption-top,
+  .reveal.is-active .reveal-caption-base,
+  .reveal.is-active .reveal-caption-top,
+  .reveal.is-forced .reveal-caption-base,
+  .reveal.is-forced .reveal-caption-top { transform: none; }
+}
+
+@media (max-width: 720px) {
+  .reveal-caption { font-size: 11px; left: 14px; bottom: 12px; }
+}

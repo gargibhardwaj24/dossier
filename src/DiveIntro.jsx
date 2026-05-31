@@ -9,7 +9,11 @@ export default function DiveIntro() {
   const sectionRef = useRef(null);
   const textGroupRef = useRef(null);
 
-  const [focal, setFocal] = useState({ x: 720, y: 465 });
+  // Focal MUST sit at the viewBox centre (800, 450) — that's the fixed
+  // point of the scale, so keeping it dead-centre means the zoom expands
+  // radially with ZERO horizontal sweep. The text below is shifted so the
+  // E's vertical stem lands exactly here.
+  const [focal, setFocal] = useState({ x: 800, y: 450 });
 
   useEffect(() => {
     if (!DEBUG) return;
@@ -40,6 +44,9 @@ export default function DiveIntro() {
     const FOCAL_X = focal.x;
     const FOCAL_Y = focal.y;
 
+    // Lenis (set up in App) already smooths the scroll position, so we read
+    // it directly each frame — no manual lerp needed (that would double-smooth
+    // and feel laggy). Just map scroll → zoom with smootherstep easing.
     let raf = 0;
     const update = () => {
       const rect = section.getBoundingClientRect();
@@ -48,19 +55,18 @@ export default function DiveIntro() {
       const scrolled = Math.max(0, Math.min(scrollable, -rect.top));
       const t = scrolled / scrollable;
 
-      const zoomRaw = Math.max(0, Math.min(1, (t - 0.04) / 0.14));
-      const zoomEased = Math.pow(zoomRaw, 1.9);
-      const scale = 1 + zoomEased * 200;
-
+      const zoomRaw = Math.max(0, Math.min(1, (t - 0.04) / 0.16));
+      // smootherstep: zero velocity at BOTH ends — gentle accel + settle.
+      const e =
+        zoomRaw * zoomRaw * zoomRaw * (zoomRaw * (zoomRaw * 6 - 15) + 10);
+      const scale = 1 + e * 200;
       textGroup.setAttribute(
         'transform',
         `translate(${FOCAL_X} ${FOCAL_Y}) scale(${scale.toFixed(3)}) translate(${-FOCAL_X} ${-FOCAL_Y})`
       );
-
       section.style.setProperty('--dive-progress', t.toFixed(4));
       raf = 0;
     };
-
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
@@ -114,15 +120,17 @@ export default function DiveIntro() {
                 fill="black"
               />
               <g ref={textGroupRef}>
+                {/* Centred on (800, 450) = the focal = viewBox centre, so the
+                    zoom expands radially with zero horizontal sweep. */}
                 <text
                   x="800"
-                  y="465"
+                  y="450"
                   textAnchor="middle"
                   dominantBaseline="central"
                   fontFamily="Archivo, system-ui, sans-serif"
                   fontWeight="900"
-                  fontSize="280"
-                  letterSpacing="-6"
+                  fontSize="140"
+                  letterSpacing="-3"
                   fill="white"
                 >
                   DIVE IN

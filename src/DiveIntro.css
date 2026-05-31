@@ -3,6 +3,10 @@
   height: 280vh;
   --dive-progress: 0;
 
+  /* Strong custom curve (Emil): the built-in CSS easings are too weak.
+     Used to bridge per-frame gaps on scroll-driven props. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
   /* IMPORTANT — set this to the bg colour of the section ABOVE
      DiveIntro. That's the colour the cover starts as. If your
      previous section is white, leave #fff; otherwise change here. */
@@ -45,7 +49,7 @@
     saturate(1.15)
     blur(calc(5px + max(0, var(--dive-progress) - 0.10) * 14px));
   transform: scale(1.08);
-  transition: filter 0.12s linear;
+  transition: filter 0.18s var(--ease-out);
 }
 
 .dive-blur-grad {
@@ -68,7 +72,7 @@
       rgba(8, 10, 24, 0.65)  100%
     );
   opacity: calc(0.55 + max(0, var(--dive-progress) - 0.15) * 0.65);
-  transition: opacity 0.15s linear;
+  transition: opacity 0.2s var(--ease-out);
 }
 
 .dive-noise {
@@ -132,11 +136,13 @@
   text-align: center;
   padding: 0 6vw;
   pointer-events: none;
-  opacity: calc(min(1, max(0, (var(--dive-progress) - 0.20) * 10)));
+  /* Softer ramp: fully in over ~0.20 of scroll (0.20 → 0.40) instead of
+     a snappy 0.10 window. Reads as a graceful arrival, not a pop. */
+  opacity: calc(min(1, max(0, (var(--dive-progress) - 0.20) * 5)));
   transform: translateY(calc(
-    (1 - min(1, max(0, (var(--dive-progress) - 0.20) * 10))) * 30px
+    (1 - min(1, max(0, (var(--dive-progress) - 0.20) * 5))) * 26px
   ));
-  transition: opacity 0.15s linear, transform 0.15s linear;
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
 }
 .dive-journey-title {
   font-family: 'Archivo', system-ui, sans-serif;

@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import ScrollBackground from './ScrollBackground';
 import FixedVideoBg from './FixedVideoBg';
+import HeroReveal from './HeroReveal';
 import Hero from './Hero';
 import DiveIntro from './DiveIntro';
 
@@ -48,11 +52,29 @@ const bodyStyle = {
 };
 
 export default function App() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 0.8,
+      // expo ease-out — strong, settles smoothly
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    let id = requestAnimationFrame(function raf(time) {
+      lenis.raf(time);
+      id = requestAnimationFrame(raf);
+    });
+    return () => {
+      cancelAnimationFrame(id);
+      lenis.destroy();
+    };
+  }, []);
+
   return (
     <>
       <ScrollBackground />
       <FixedVideoBg />
       <main style={{ position: 'relative', zIndex: 1 }}>
+        <HeroReveal />
         <Hero />
         <DiveIntro />
         {sections.map((s, i) => (

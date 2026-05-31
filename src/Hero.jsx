@@ -11,6 +11,7 @@ export default function Hero() {
   const [atBottom, setAtBottom] = useState(false);
   const inlineRef = useRef(null);
   const modalRef = useRef(null);
+  const heroSectionRef = useRef(null);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -27,8 +28,14 @@ export default function Hero() {
       const docH = document.documentElement.scrollHeight;
       const maxScroll = Math.max(1, docH - vh);
 
-      // hero blur/lift: ramp completes in ~60% of a viewport
-      const t = Math.min(1, Math.max(0, window.scrollY / (vh * 0.6)));
+      // hero blur/lift: ramp completes in ~60% of a viewport, measured from
+      // when this section reaches the top of the viewport (it's no longer the
+      // first screen — a full-screen reveal sits above it).
+      const heroEl = heroSectionRef.current;
+      const heroTop = heroEl
+        ? heroEl.getBoundingClientRect().top + window.scrollY
+        : 0;
+      const t = Math.min(1, Math.max(0, (window.scrollY - heroTop) / (vh * 0.6)));
       document.documentElement.style.setProperty('--hero-blur', t.toFixed(4));
 
       // total page progress, used for the bottom-of-page cue flip
@@ -114,7 +121,7 @@ export default function Hero() {
         </div>
       </header>
 
-      <section className="hero" id="top">
+      <section className="hero" id="top" ref={heroSectionRef}>
         {/* <p className="hero-since">Since 2020</p> */}
 
         <h1 className="hero-headline">
