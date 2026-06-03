@@ -2,9 +2,9 @@
   --scroll-progress: 0;
 
   /* three-stop palette */
-  --col-dark: #0e1b40;   /* deep navy at top */
-  --col-mid:  #8eb6d4;   /* light sky blue mid-scroll */
-  --col-warm: #f3b69a;   /* peach at bottom */
+  --col-dark: #f3c5a8;   /* deep navy at top */
+  --col-mid:  #d4988e;   /* light sky blue mid-scroll */
+  --col-warm: #887d2b;   /* peach at bottom */
 
   /* phase weights (0→1 each) */
   --p1: min(1, calc(var(--scroll-progress) * 2));
@@ -38,6 +38,14 @@
   filter: blur(4px) brightness(0.95) saturate(1.05);
   opacity: 0.95;
   transform: scale(1.06); /* hide blur edges */
+  transform-origin: center;
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Once the 03 — STUDIO section is reached, the background video zooms in and
+   stays zoomed (the class is latched on in App and never removed). */
+.sb-zoomed .sb-video {
+  transform: scale(1.45);
 }
 
 /* recolour layer: paints scroll-driven hue on top of the video.
@@ -55,7 +63,7 @@
 .sb-tint {
   position: absolute;
   inset: 0;
-  background: rgba(20, 16, 12, 0.12);
+  background: rgba(247, 194, 142, 0.12);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
@@ -95,9 +103,11 @@
   inset: 0;
   background: radial-gradient(120% 90% at 50% 50%,
                 transparent 55%,
+                
                 rgba(60, 45, 30, 0.20) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .sb-grain { animation: none !important; }
+  .sb-video { transition: none !important; }
 }

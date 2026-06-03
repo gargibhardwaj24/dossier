@@ -1,0 +1,104 @@
+/* ============================================================
+   Intro loader timeline (all CSS, so it can't desync):
+     0.0s            first stroke starts
+     ~3.2s           name finished writing (strokes draw in sequence)
+     3.2–3.7s        hold
+     3.7–4.7s        loader slides up + fades; page rises in
+   ============================================================ */
+
+/* ---- Full-screen black overlay ---- */
+.intro-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #040404;
+  animation: intro-lift 1000ms cubic-bezier(0.76, 0, 0.24, 1) 3700ms forwards;
+}
+
+@keyframes intro-lift {
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* ---- Signature: small + gold, writing itself ---- */
+.intro-sig {
+  display: flex;
+}
+
+.intro-sig svg {
+  width: clamp(170px, 24vw, 320px);
+  height: auto;
+  overflow: visible;
+}
+
+.intro-sig svg path {
+  /* !important beats the SVG's inline style="stroke:black; fill:black". */
+  stroke: #d8b65a !important;
+  fill: none !important;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  /* Steady per-stroke draw; the staggered delays below sequence them so each
+     stroke largely finishes before the next begins (a pen writing). The
+     near-symmetric ease keeps a constant pen speed rather than snapping. */
+  animation: sig-draw 480ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+@keyframes sig-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Sequence the strokes left-to-right, ~290ms apart so they chain at a natural
+   pace. Paths in the SVG are already ordered left-to-right. */
+.intro-sig svg path:nth-child(1)  { animation-delay: 0ms;    }
+.intro-sig svg path:nth-child(2)  { animation-delay: 290ms;  }
+.intro-sig svg path:nth-child(3)  { animation-delay: 580ms;  }
+.intro-sig svg path:nth-child(4)  { animation-delay: 870ms;  }
+.intro-sig svg path:nth-child(5)  { animation-delay: 1160ms; }
+.intro-sig svg path:nth-child(6)  { animation-delay: 1450ms; }
+.intro-sig svg path:nth-child(7)  { animation-delay: 1740ms; }
+.intro-sig svg path:nth-child(8)  { animation-delay: 2030ms; }
+.intro-sig svg path:nth-child(9)  { animation-delay: 2320ms; }
+.intro-sig svg path:nth-child(10) { animation-delay: 2610ms; }
+.intro-sig svg path:nth-child(11) { animation-delay: 2900ms; }
+.intro-sig svg path:nth-child(12) { animation-delay: 3190ms; }
+
+/* ---- Main portfolio rises one screen-height into view as the loader lifts.
+   100vh (one viewport), NOT 100% — the element is many screens tall, so 100%
+   would shove it down by its full height and strand the page far below. ---- */
+.site-main {
+  animation: page-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) 3700ms both;
+}
+
+@keyframes page-rise {
+  from {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ---- Reduced motion: no writing, no slide — just show the page ---- */
+@media (prefers-reduced-motion: reduce) {
+  .intro-loader,
+  .intro-sig svg path,
+  .site-main {
+    animation: none !important;
+  }
+  .site-main {
+    transform: none;
+    opacity: 1;
+  }
+}

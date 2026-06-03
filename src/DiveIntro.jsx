@@ -1,39 +1,34 @@
 import { useEffect, useRef, useState } from 'react';
 import heroVdo from './assets/videos/hero_vdo.mp4';
+import heroBg from './assets/hero_bg.png';
 import './DiveIntro.css';
 
-
-const DEBUG = true;
 
 export default function DiveIntro() {
   const sectionRef = useRef(null);
   const textGroupRef = useRef(null);
+  const textRef = useRef(null);
 
-  // Focal MUST sit at the viewBox centre (800, 450) — that's the fixed
-  // point of the scale, so keeping it dead-centre means the zoom expands
-  // radially with ZERO horizontal sweep. The text below is shifted so the
-  // E's vertical stem lands exactly here.
   const [focal, setFocal] = useState({ x: 800, y: 450 });
 
   useEffect(() => {
-    if (!DEBUG) return;
-    const onKey = (e) => {
-      const step = e.shiftKey ? 1 : 5;
-      setFocal((f) => {
-        let { x, y } = f;
-        if (e.key === 'ArrowLeft')  x -= step;
-        if (e.key === 'ArrowRight') x += step;
-        if (e.key === 'ArrowUp')    y -= step;
-        if (e.key === 'ArrowDown')  y += step;
-        if (e.key === 'l' || e.key === 'L') {
-          // eslint-disable-next-line no-console
-          console.log(`FOCAL locked: x=${x} y=${y}`);
-        }
-        return { x, y };
-      });
+    const measure = () => {
+      const t = textRef.current;
+      if (!t || typeof t.getExtentOfChar !== 'function') return;
+      try {
+        // Dive into a letter with a SOLID VERTICAL STEM so the zoom fills the
+        // screen with video. The 'V' (index 3) can't be used — its centre is an
+        // open cavity, so zooming in lands in empty space. Index 4 = the 'E' in
+        // "DELVE IN", just right of centre; sit ~11% in (on its left stem), mid-height.
+        const e = t.getExtentOfChar(4);
+        setFocal({ x: e.x + e.width * 0.11, y: e.y + e.height / 2 });
+      } catch {
+        /* glyph not measurable yet — the rAF / fonts.ready retries cover it */
+      }
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const raf = requestAnimationFrame(measure);
+    if (document.fonts?.ready) document.fonts.ready.then(measure);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   useEffect(() => {
@@ -83,6 +78,11 @@ export default function DiveIntro() {
   return (
     <section ref={sectionRef} className="dive-section" id="work">
       <div className="dive-sticky">
+        {/* DIVE IN page backdrop: exactly the hero_bg image, no filters/grain.
+            Sits inside the section so it only covers the global background here;
+            the hero_vdo letters expand over it on the dive into the journey. */}
+        <img className="dive-cover-bg" src={heroBg} alt="" draggable="false" />
+
         <div className="dive-masked">
           <video
             className="dive-video"
@@ -94,7 +94,6 @@ export default function DiveIntro() {
             preload="auto"
           />
           <div className="dive-blur-grad" />
-          <div className="dive-noise" />
         </div>
 
         <svg
@@ -103,7 +102,7 @@ export default function DiveIntro() {
           preserveAspectRatio="xMidYMid slice"
           aria-hidden="true"
         >
-          <defs>
+          <defs className="dive-svg-defs">
             <mask
               id="dive-text-mask"
               maskUnits="userSpaceOnUse"
@@ -120,9 +119,11 @@ export default function DiveIntro() {
                 fill="black"
               />
               <g ref={textGroupRef}>
-                {/* Centred on (800, 450) = the focal = viewBox centre, so the
-                    zoom expands radially with zero horizontal sweep. */}
+                {/* Centred on the viewBox; the focal is measured onto the E's
+                    stem so the dive lands inside the letter, not the gap. */}
                 <text
+                  style={{ paddingRight: '30px', margin: 0 }}
+                  ref={textRef}
                   x="800"
                   y="450"
                   textAnchor="middle"
@@ -133,7 +134,7 @@ export default function DiveIntro() {
                   letterSpacing="-3"
                   fill="white"
                 >
-                  DIVE IN
+                  DELVE IN
                 </text>
               </g>
             </mask>

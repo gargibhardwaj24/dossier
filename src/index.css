@@ -56,6 +56,15 @@ body {
   margin: 0;
 }
 
+/* Hide the scrollbar (scrolling still works) across browsers */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* old Edge / IE */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, new Edge */
+}
+
 #root {
   width: 100%;
   margin: 0 auto;

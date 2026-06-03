@@ -64,8 +64,7 @@
   user-select: none;
 }
 
-/* animatable spotlight radius — @property lets the mask grow/shrink smoothly.
-   inherits: true so the mask AND the ring read the same value off .reveal. */
+/* animatable spotlight radius — @property lets the blob grow/shrink smoothly. */
 @property --r {
   syntax: '<length>';
   inherits: true;
@@ -77,52 +76,54 @@
 }
 /* pointer over the stage → grow the spotlight */
 .reveal.is-active {
-  --r: clamp(120px, 16vw, 240px);
+  --r: clamp(70px, 9vw, 130px);
 }
-
-/* the revealed layer is fully painted but clipped to a soft circle that
-   follows the pointer (--mx/--my set from JS). Radius is 0 by default, so
-   only jacket.jpg shows until the pointer enters. */
+/* the crisp revealed layer, masked to the jagged blob. Masking changes only
+   WHERE the hero shows, so the interior stays sharp and static. */
 .reveal-top {
-  -webkit-mask-image: radial-gradient(
-    circle var(--r) at var(--mx, 50%) var(--my, 50%),
-    #000 58%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  mask-image: radial-gradient(
-    circle var(--r) at var(--mx, 50%) var(--my, 50%),
-    #000 58%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  z-index: 1;
+  -webkit-mask: url(#revealMask);
+  mask: url(#revealMask);
 }
 
-/* white ring tracing the spotlight boundary, centered on the pointer */
-.reveal-ring {
+/* full-stage overlay that hosts the mask def + the visible glowing edge */
+.reveal-shape {
   position: absolute;
-  left: var(--mx, 50%);
-  top: var(--my, 50%);
-  width: calc(var(--r) * 1.55);
-  height: calc(var(--r) * 1.55);
-  transform: translate(-50%, -50%);
-  border: 2px solid rgba(255, 255, 255, 0.92);
-  border-radius: 50%;
-  box-shadow: 0 0 14px rgba(255, 255, 255, 0.3);
-  pointer-events: none;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 2;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.reveal.is-active .reveal-ring {
-  opacity: 1;
+  overflow: visible;
+  pointer-events: none;
 }
 
-/* keyboard full reveal → drop the mask and hide the boundary ring */
-.reveal.is-forced .reveal-top {
-  -webkit-mask-image: none;
-  mask-image: none;
+/* both the mask shape and the visible edge are the same pointer-following
+   circle; the displacement filter jags their (identical) outline. */
+.reveal-mask-shape,
+.reveal-edge {
+  cx: var(--mx, 50%);
+  cy: var(--my, 50%);
+  r: var(--r, 0px);
 }
-.reveal.is-forced .reveal-ring {
-  opacity: 0;
+
+/* the glowing white border tracing the jagged reveal edge */
+.reveal-edge {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 2.5;
+}
+.reveal-edge-glow {
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.85))
+          drop-shadow(0 0 11px rgba(255, 255, 255, 0.5));
+}
+
+/* keyboard full reveal → drop the mask (whole hero shows), hide the edge */
+.reveal.is-forced .reveal-top {
+  -webkit-mask: none;
+  mask: none;
+}
+.reveal.is-forced .reveal-shape {
+  display: none;
 }
 
 /* ---------- caption that swaps text ---------- */

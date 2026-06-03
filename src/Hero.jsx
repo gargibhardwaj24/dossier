@@ -9,6 +9,7 @@ export default function Hero() {
   const [expanded, setExpanded] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [atBottom, setAtBottom] = useState(false);
+  const [cueHidden, setCueHidden] = useState(false);
   const inlineRef = useRef(null);
   const modalRef = useRef(null);
   const heroSectionRef = useRef(null);
@@ -37,6 +38,16 @@ export default function Hero() {
         : 0;
       const t = Math.min(1, Math.max(0, (window.scrollY - heroTop) / (vh * 0.6)));
       document.documentElement.style.setProperty('--hero-blur', t.toFixed(4));
+
+      // scroll-down cue lives on the FIRST page only. Hide it once the landing
+      // (the full-screen reveal section above everything) has scrolled up past
+      // ~60% of the viewport. Measured from the section's rect so it's robust
+      // to the smooth-scroll mode (window.scrollY can lag with Lenis).
+      const firstPage = document.querySelector('.reveal-section');
+      const scrolledPastFirst = firstPage
+        ? -firstPage.getBoundingClientRect().top
+        : window.scrollY;
+      setCueHidden(scrolledPastFirst > vh * 0.6);
 
       // total page progress, used for the bottom-of-page cue flip
       const p = Math.min(1, Math.max(0, window.scrollY / maxScroll));
@@ -109,7 +120,7 @@ export default function Hero() {
             <span>Let&rsquo;s chat</span>
             <span className="nav-arrow" aria-hidden="true">&rarr;</span>
           </a>
-          <div className="hero-lang mt-4" aria-label="Disciplines">
+          {/* <div className="hero-lang mt-4" aria-label="Disciplines">
             <span>UI</span>
             <span className="hero-lang-sep">|</span>
             <span>DEV</span>
@@ -117,7 +128,7 @@ export default function Hero() {
             <span>UX</span>
             <span className="hero-lang-sep">|</span>
             <span>AI</span>
-          </div>
+          </div> */}
         </div>
       </header>
 
@@ -154,7 +165,7 @@ export default function Hero() {
 
       <button
         type="button"
-        className={`hero-scroll-cue${atBottom ? ' is-at-bottom' : ''}`}
+        className={`hero-scroll-cue${atBottom ? ' is-at-bottom' : ''}${cueHidden ? ' is-hidden' : ''}`}
         onClick={() => {
           if (atBottom) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
