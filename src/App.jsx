@@ -5,6 +5,7 @@ import ScrollBackground from './ScrollBackground';
 import FixedVideoBg from './FixedVideoBg';
 import HeroReveal from './HeroReveal';
 import Hero from './Hero';
+import FeaturedWorks from './FeaturedWorks';
 import DiveIntro from './DiveIntro';
 import IntroLoader from './IntroLoader';
 import './IntroLoader.css';
@@ -14,8 +15,9 @@ const prefersReducedMotion =
   typeof window !== 'undefined' &&
   window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+// 03 — STUDIO is now the FEATURED WORKS marquee (see FeaturedWorks), rendered
+// separately just below Hero. These are the sections that follow it.
 const sections = [
-  { eyebrow: '03 — STUDIO',  title: 'made in motion' },
   { eyebrow: '04 — PROCESS', title: 'curious by default' },
   { eyebrow: '05 — CLIENTS', title: 'people we love' },
   { eyebrow: '06 — CONTACT', title: 'say hello' },
@@ -144,17 +146,17 @@ export default function App() {
         <HeroReveal />
         <DiveIntro />
         <Hero />
+        <FeaturedWorks ref={studioRef} />
         {sections.map((s, i) => (
           <section
             key={i}
-            ref={i === 0 ? studioRef : undefined}
             style={sectionStyle}
             id={i === sections.length - 1 ? 'contact' : undefined}
           >
             <p style={eyebrowStyle}>{s.eyebrow}</p>
             <h2 style={titleStyle}>{s.title}</h2>
             <p style={bodyStyle}>
-              Dummy section {i + 3}. Scroll to see the background morph and shift.
+              Dummy section {i + 4}. Scroll to see the background morph and shift.
               Replace with real content once the motion feels right.
             </p>
           </section>
