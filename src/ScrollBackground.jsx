@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import './ScrollBackground.css';
 import bgVideo from './assets/videos/bgvideo.mp4';
 
-export default function ScrollBackground() {
+export default function ScrollBackground({ zoomed = false }) {
   const rootRef = useRef(null);
   const ticking = useRef(false);
 
@@ -35,7 +35,11 @@ export default function ScrollBackground() {
   }, []);
 
   return (
-    <div ref={rootRef} className="sb-root" aria-hidden="true">
+    <div
+      ref={rootRef}
+      className={`sb-root${zoomed ? ' sb-zoomed' : ''}`}
+      aria-hidden="true"
+    >
       <video
         className="sb-video"
         src={bgVideo}

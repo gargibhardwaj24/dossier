@@ -96,8 +96,12 @@
   transition: filter 0.12s linear, transform 0.12s linear, opacity 0.12s linear;
 }
 .hero-scroll-cue {
-  opacity: calc(1 - var(--hero-blur, 0) * 1.4);
-  transition: opacity 0.12s linear;
+  transition: opacity 0.35s ease, transform 0.55s cubic-bezier(0.7, 0, 0.25, 1);
+}
+/* hidden once you leave the first page */
+.hero-scroll-cue.is-hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* rotating word at end of headline */
@@ -178,13 +182,11 @@
   padding: 8px;
   cursor: pointer;
 
-  /* slide down and out as the hero blurs; slide back up near the bottom of the page */
-  --cue-hide:   calc(var(--hero-blur, 0) * 140px);
   --cue-return: calc(max(0, min(1, (var(--page-progress, 0) - 0.85) * 8)) * 140px);
-  --cue-y:      calc(var(--cue-hide) - var(--cue-return));
+  --cue-y:      calc(0px - var(--cue-return));
 
   transform: translate(-50%, var(--cue-y)) rotate(0deg);
-  transition: transform 0.55s cubic-bezier(0.7, 0, 0.25, 1);
+  transition: transform 0.55s cubic-bezier(0.7, 0, 0.25, 1), opacity 0.35s ease;
 }
 .hero-scroll-cue.is-at-bottom {
   transform: translate(-50%, var(--cue-y)) rotate(180deg);
