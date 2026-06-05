@@ -47,11 +47,9 @@ function Slide({ seed, title, tag, span }) {
   );
 }
 
-// 03 — STUDIO slot: the variable-font heading followed by the project slides.
 const FeaturedWorks = forwardRef(function FeaturedWorks(_props, ref) {
   const projectsRef = useRef(null);
 
-  // Reveal each slide (fade + rise) as it scrolls into view, once.
   useEffect(() => {
     const root = projectsRef.current;
     if (!root) return;
@@ -65,13 +63,9 @@ const FeaturedWorks = forwardRef(function FeaturedWorks(_props, ref) {
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-in');
-            io.unobserve(e.target); // fire once per slide
-          }
+          e.target.classList.toggle('is-in', e.isIntersecting);
         }
       },
-      // Trigger a touch before fully visible so the rise reads as it enters.
       { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
     );
     slides.forEach((s) => io.observe(s));

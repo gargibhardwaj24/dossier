@@ -1,15 +1,10 @@
 .dive-section {
   position: relative;
-  height: 280vh;
+  height: 480vh;
   --dive-progress: 0;
 
-  /* Strong custom curve (Emil): the built-in CSS easings are too weak.
-     Used to bridge per-frame gaps on scroll-driven props. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
-  /* IMPORTANT — set this to the bg colour of the section ABOVE
-     DiveIntro. That's the colour the cover starts as. If your
-     previous section is white, leave #fff; otherwise change here. */
   --dive-cover: #0e1b40;
 }
 
@@ -22,9 +17,6 @@
   isolation: isolate;
 }
 
-/* DIVE IN page backdrop — exactly the hero_bg image, no filters/grain.
-   Bottom layer of the sticky, so OUTSIDE the letters you see this clean image
-   (it covers the global ScrollBackground for the duration of this section). */
 .dive-cover-bg {
   position: absolute;
   inset: 0;
@@ -36,28 +28,16 @@
   object-position: center;
   display: block;
   user-select: none;
-  /* Stays SOLID through the visible scale-up of the DIVE IN text (you watch it
-     zoom on the hero_bg page), then fades only at the tail (0.14 → 0.20) once
-     the letters are already huge — resolving into the hero_vdo journey.
-     FixedVideoBg is already opaque behind it, so the fade reveals video. */
   opacity: calc(min(1, max(0, (0.20 - var(--dive-progress)) / 0.06)));
   transition: opacity 0.15s var(--ease-out);
 }
 
-/* Wrapper that gets the inverted text mask applied via CSS.
-   Inside the letter shapes: the hero_vdo (the journey you dive into) is visible.
-   Outside: this stack is transparent, so the clean .dive-cover-bg shows. As the
-   text scales up, the video-filled letter expands to fill the screen → journey. */
 .dive-masked {
   position: absolute;
   inset: 0;
   z-index: 1;
   mask: url(#dive-text-mask);
   -webkit-mask: url(#dive-text-mask);
-  /* Once the letter has zoomed, fade this masked layer out (0.18 → 0.26) so the
-     journey resolves to the single full-screen FixedVideoBg video. Otherwise
-     the scaled glyph (e.g. the open V) leaves a hard-edged wedge over a second,
-     separate video — and a black cavity once that backstop deactivates. */
   opacity: calc(min(1, max(0, 1 - (var(--dive-progress) - 0.18) / 0.08)));
   transition: opacity 0.15s var(--ease-out);
 }
@@ -70,9 +50,6 @@
   object-fit: cover;
   display: block;
   z-index: 1;
-  /* Sharp + bright inside the small DIVE IN letters so the hero_vdo clearly
-     reads as PLAYING footage. Only as it zooms into the journey does it ramp
-     to a dimmer, blurred, moody full-screen background. */
   filter:
     brightness(calc(1 - max(0, var(--dive-progress) - 0.12) * 1.4))
     saturate(1.1)
@@ -149,14 +126,12 @@
   font-weight: 400;
   font-size: 1.05em;
   letter-spacing: -0.01em;
-  text-transform: none;       /* override parent's uppercase */
+  text-transform: none;      
 }
 /* .dive-svg-defs{
   padding-right: 90px;
   margin: 0;
 } */
-/* Journey title — starts fading in at t=0.20 (was 0.32), fully
-   visible by t=0.30. Lands right as the dive video fills the viewport. */
 .dive-journey-content {
   position: absolute;
   inset: 0;
@@ -168,8 +143,6 @@
   text-align: center;
   padding: 0 6vw;
   pointer-events: none;
-  /* Softer ramp: fully in over ~0.20 of scroll (0.20 → 0.40) instead of
-     a snappy 0.10 window. Reads as a graceful arrival, not a pop. */
   opacity: calc(min(1, max(0, (var(--dive-progress) - 0.20) * 5)));
   transform: translateY(calc(
     (1 - min(1, max(0, (var(--dive-progress) - 0.20) * 5))) * 26px
@@ -189,7 +162,7 @@
 }
 
 @media (max-width: 720px) {
-  .dive-section { height: 240vh; }
+  .dive-section { height: 400vh; } 
   .dive-journey-title { font-size: clamp(36px, 11vw, 72px); }
 }
 

@@ -3,8 +3,8 @@
 
   /* three-stop palette */
   --col-dark: #f3c5a8;   /* deep navy at top */
-  --col-mid:  #d4988e;   /* light sky blue mid-scroll */
-  --col-warm: #887d2b;   /* peach at bottom */
+  --col-mid:  #61180b;   /* light sky blue mid-scroll */
+  --col-warm: #260000;   /* peach at bottom */
 
   /* phase weights (0→1 each) */
   --p1: min(1, calc(var(--scroll-progress) * 2));
@@ -41,16 +41,11 @@
   transform-origin: center;
   transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-/* Once the 03 — STUDIO section is reached, the background video zooms in and
-   stays zoomed (the class is latched on in App and never removed). */
+ 
 .sb-zoomed .sb-video {
   transform: scale(1.45);
 }
-
-/* recolour layer: paints scroll-driven hue on top of the video.
-   mix-blend-mode: color keeps the video's luminosity (motion + light/dark)
-   while replacing its hue + saturation with the wash colour. */
+ 
 .sb-wash {
   position: absolute;
   inset: 0;

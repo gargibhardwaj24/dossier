@@ -1,0 +1,95 @@
+.roles-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 6vw;
+  position: relative;
+  color: #efe9d8;
+}
+
+.roles-eyebrow {
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin: 0 0 48px;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+.roles-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.roles-item {
+  font-family: 'Archivo', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(40px, 7vw, 70px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #efe9d8;
+  cursor: pointer;
+  outline: none; 
+  opacity: 0.78;
+  transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+}
+ 
+.roles-list:hover .roles-item,
+.roles-list:focus-within .roles-item {
+  opacity: 0.32;
+  filter: blur(4px);
+}
+.roles-section:has(.roles-list:hover) .roles-eyebrow,
+.roles-section:has(.roles-list:focus-within) .roles-eyebrow {
+  opacity: 0.25;
+  filter: blur(3px);
+}
+
+.roles-list .roles-item:hover,
+.roles-list .roles-item:focus-visible {
+  opacity: 1;
+  filter: blur(0) drop-shadow(0 6px 30px rgba(0, 0, 0, 0.45));
+  transform: scale(1.04);
+}
+
+.roles-cursor-vid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0; 
+  transform: translate(-50%, -50%);
+  scale: 0.8;
+  transition: opacity 0.22s ease, scale 0.22s ease;
+  will-change: transform;
+}
+.roles-cursor-vid.is-visible {
+  opacity: 1;
+  scale: 1;
+}
+
+@media (max-width: 720px) {
+  .roles-item { font-size: clamp(32px, 9vw, 64px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roles-eyebrow,
+  .roles-item {
+    transition: none;
+  }
+}
