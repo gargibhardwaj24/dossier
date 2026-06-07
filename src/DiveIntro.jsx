@@ -16,14 +16,9 @@ export default function DiveIntro() {
       const t = textRef.current;
       if (!t || typeof t.getExtentOfChar !== 'function') return;
       try {
-        // Dive into a letter with a SOLID VERTICAL STEM so the zoom fills the
-        // screen with video. The 'V' (index 3) can't be used — its centre is an
-        // open cavity, so zooming in lands in empty space. Index 4 = the 'E' in
-        // "DELVE IN", just right of centre; sit ~11% in (on its left stem), mid-height.
         const e = t.getExtentOfChar(4);
         setFocal({ x: e.x + e.width * 0.11, y: e.y + e.height / 2 });
       } catch {
-        /* glyph not measurable yet — the rAF / fonts.ready retries cover it */
       }
     };
     const raf = requestAnimationFrame(measure);
@@ -39,9 +34,6 @@ export default function DiveIntro() {
     const FOCAL_X = focal.x;
     const FOCAL_Y = focal.y;
 
-    // Lenis (set up in App) already smooths the scroll position, so we read
-    // it directly each frame — no manual lerp needed (that would double-smooth
-    // and feel laggy). Just map scroll → zoom with smootherstep easing.
     let raf = 0;
     const update = () => {
       const rect = section.getBoundingClientRect();
@@ -51,7 +43,6 @@ export default function DiveIntro() {
       const t = scrolled / scrollable;
 
       const zoomRaw = Math.max(0, Math.min(1, (t - 0.04) / 0.16));
-      // smootherstep: zero velocity at BOTH ends — gentle accel + settle.
       const e =
         zoomRaw * zoomRaw * zoomRaw * (zoomRaw * (zoomRaw * 6 - 15) + 10);
       const scale = 1 + e * 200;
@@ -78,9 +69,6 @@ export default function DiveIntro() {
   return (
     <section ref={sectionRef} className="dive-section" id="work">
       <div className="dive-sticky">
-        {/* DIVE IN page backdrop: exactly the hero_bg image, no filters/grain.
-            Sits inside the section so it only covers the global background here;
-            the hero_vdo letters expand over it on the dive into the journey. */}
         <img className="dive-cover-bg" src={heroBg} alt="" draggable="false" />
 
         <div className="dive-masked">
@@ -119,8 +107,6 @@ export default function DiveIntro() {
                 fill="black"
               />
               <g ref={textGroupRef}>
-                {/* Centred on the viewBox; the focal is measured onto the E's
-                    stem so the dive lands inside the letter, not the gap. */}
                 <text
                   style={{ paddingRight: '30px', margin: 0 }}
                   ref={textRef}

@@ -4,13 +4,10 @@
   font-family: 'Roboto Flex', system-ui, sans-serif;
   font-variation-settings: 'wght' 820, 'wdth' 151;
 }
-
-/* Per-letter spans. inline-block so each has a measurable box (for cursor
-   proximity) and so the width axis can change without breaking the line.
-   font-variation-settings is set inline by JS and transitioned there. */
+ 
 .vft-letter {
   display: inline-block;
-  white-space: pre; /* keep the non-breaking space's width */
+  white-space: pre;  
   will-change: font-variation-settings;
 }
 

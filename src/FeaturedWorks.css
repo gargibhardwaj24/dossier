@@ -1,14 +1,11 @@
-/* "Page" hosting the FEATURED WORKS heading + project slides, stacked. */
 .fw-section {
   min-height: 100vh;
-  padding: 18vh 6vw 14vh;        /* top offset — raise/lower with the first value */
+  padding: 18vh 6vw 14vh;        
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   color: #efe9d8;
 }
 
-/* Oversized heading. Font-family + variable axes come from .vft; this just
-   sizes and lays it out. Letters are spans, so they sit on one line. */
 .fw-heading {
   margin: 0;
   text-align: center;
@@ -19,15 +16,29 @@
   cursor: default;
 }
 
-/* ---------- project slides ---------- */
 .fw-projects {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2vw, 32px);
   margin-top: clamp(48px, 8vh, 110px);
 }
 
-/* two slides side by side */
+.proj-pin {
+  --pin-dwell: 55vh;
+  height: calc(100vh + var(--pin-dwell));
+}
+
+.proj-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.proj-sticky > .proj-row {
+  width: 100%;
+}
+
 .proj-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -43,7 +54,6 @@
   text-decoration: none;
   color: inherit;
 
-  /* scroll-in reveal: start lowered + faded, settle when .is-in is added */
   opacity: 0;
   transform: translateY(48px);
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
@@ -54,17 +64,14 @@
   opacity: 1;
   transform: translateY(0);
 }
-/* small stagger so the 2-up pair cascades rather than popping together */
 .proj-row .proj-slide:nth-child(2) {
   transition-delay: 0.12s;
 }
 
-/* full-width "big" slide */
 .proj-slide--big {
   height: clamp(360px, 72vh, 820px);
 }
 
-/* half-width slide inside a 2-up row */
 .proj-slide--half {
   height: clamp(300px, 56vh, 680px);
 }
@@ -82,12 +89,10 @@
   transform: scale(1.04);
 }
 
-/* pixelated overlay: a tiny image scaled up with nearest-neighbour. Hidden by
-   default, crossfades in on hover so the slide "pixelates". */
 .proj-img-px {
   opacity: 0;
   image-rendering: pixelated;
-  image-rendering: crisp-edges; /* fallback for older engines */
+  image-rendering: crisp-edges; 
   image-rendering: pixelated;
   transition: opacity 0.28s ease-out,
               transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -95,8 +100,6 @@
 .proj-slide:hover .proj-img-px {
   opacity: 1;
 }
-
-/* caption — bottom-left, sitting over a soft gradient for legibility */
 .proj-meta {
   position: absolute;
   left: 0;
@@ -122,7 +125,6 @@
   opacity: 0.75;
 }
 
-/* stack the 2-up row on small screens */
 @media (max-width: 720px) {
   .proj-row { grid-template-columns: 1fr; }
   .proj-slide--half { height: clamp(280px, 60vh, 520px); }
