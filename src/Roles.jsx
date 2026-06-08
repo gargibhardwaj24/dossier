@@ -1,5 +1,5 @@
 import { forwardRef, useRef, useState } from 'react';
-import cursorVid from './assets/cursor_vid.mp4';
+import cursorVid from './assets/creative.mp4';
 import './Roles.css';
 
 const roles = [

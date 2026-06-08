@@ -66,8 +66,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 240px;
-  height: 350px;
+  width: 440px;
+  height: 250px;
   object-fit: cover;
   border-radius: 12px;
   pointer-events: none;
