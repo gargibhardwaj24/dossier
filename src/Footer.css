@@ -1,0 +1,91 @@
+/*
+  Vertical-stretch ending.
+
+  The wordmark is fixed to the bottom edge of the viewport (`.footer-panel`)
+  and is stretched vertically as the page scrolls into the footer: its width
+  stays fixed while its height grows from 0 to full (GSAP animates scaleY,
+  transform-origin is the baseline). `.footer-reveal` is just a tall, empty
+  scroll runway that gives the stretch real scroll distance to play out over.
+
+  No background of its own: the site's fixed atmospheric background (video +
+  wash + grain, z-index -1) shows straight through, so the footer reads as a
+  continuation of the page, never a separate / black section.
+*/
+
+.footer-reveal {
+  position: relative;
+  /* Pure scroll runway: it carries no visible content itself, it just gives
+     the fixed panel below real scroll distance to animate the stretch over. */
+  height: 200vh;
+}
+
+.footer-panel {
+  /* Fixed — NOT sticky. Sticky proved unreliable here (it depends on flow /
+     flex / ancestor conditions that this layout kept tripping). `fixed` is
+     glued to the viewport bottom unconditionally, so the wordmark is always
+     flush to the bottom edge of the screen; the GSAP scrub only ever reveals
+     it (scaleY 0 → 1) while the runway above is being scrolled through, so it
+     stays invisible for the rest of the page. */
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  /* sits above the fixed atmospheric background (z-index -1); the page content
+     in .site-main (z-index 1) paints over it, so the wordmark only shows once
+     that content has scrolled away at the very end. */
+  z-index: 0;
+
+  display: flex;
+  justify-content: center;
+  /* anchor the wordmark to the very bottom edge of the viewport */
+  align-items: flex-end;
+
+  pointer-events: none;
+}
+
+/* the hero element: one massive piece of typography that spans most of the
+   viewport width and reads as a visual element, not body copy. */
+.footer-wordmark {
+  /* GARGI is all caps and has no descenders, but the font still reserves
+     descender space below the baseline — that empty space is what sits as a
+     gap between the letters and the viewport bottom. Pull the box down by that
+     amount (it pushes below bottom:0, off-screen) so the caps land flush on the
+     bottom edge. Tune --baseline-trim if a hair of gap or clipping remains. */
+  --baseline-trim: 0.21em;
+  margin: 0 0 calc(-1 * var(--baseline-trim));
+
+  font-family: "Archivo", system-ui, sans-serif;
+  /* Fallback only: the real size is computed in Footer.jsx (`fit`) to make the
+     word span the full viewport width exactly. This clamp just avoids a flash
+     of mis-sized text before that JS runs. */
+  font-size: clamp(4rem, 25vw, 22rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+
+  color: #efe9d8;
+  /* soft glow keeps the wordmark legible over any frame of the moving bg */
+  text-shadow: 0 2px 56px rgba(0, 0, 0, 0.45);
+
+  /* Pivot the vertical stretch at the BASELINE (not the border-box bottom).
+     The baseline sits --baseline-trim above the box bottom, so scaling from
+     here keeps the bottom of the caps glued to the viewport edge while they
+     grow upward — even at large scale factors. Scaling from the box bottom
+     would lift the baseline and re-open a gap. Width is untouched (only scaleY
+     animates). */
+  transform-origin: center calc(100% - var(--baseline-trim));
+  transform: scaleY(0);
+  will-change: transform;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* No-JS / reduced-motion: the type is simply present at full height and fully
+   legible — never left squashed flat. */
+@media (prefers-reduced-motion: reduce) {
+  .footer-wordmark {
+    transform: none !important;
+  }
+}

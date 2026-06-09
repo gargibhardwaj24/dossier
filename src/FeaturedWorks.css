@@ -19,6 +19,7 @@
 .fw-projects {
   display: flex;
   flex-direction: column;
+  gap: clamp(20px, 3vw, 48px);   /* vertical spacing between project slides */
   margin-top: clamp(48px, 8vh, 110px);
 }
 
