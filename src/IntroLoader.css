@@ -58,7 +58,12 @@
 .intro-sig svg path:nth-child(12) { animation-delay: 3190ms; }
 
 .site-main {
-  animation: page-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) 3700ms both;
+  /* `backwards` (not `both`): holds the hidden translateY(100vh) state during
+     the 3700ms delay, animates the page up, then DROPS the transform once the
+     intro finishes. A lingering transform here (even the identity translateY(0)
+     that `both`/`forwards` would retain) makes .site-main a containing block,
+     which silently breaks `position: sticky` on the footer panel inside it. */
+  animation: page-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) 3700ms backwards;
 }
 
 @keyframes page-rise {
