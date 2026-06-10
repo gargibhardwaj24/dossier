@@ -130,7 +130,7 @@ export default function Hero() {
 
         <h1 className="hero-headline">
           NOT JUST<br />
-          WEBSITES &mdash; I<br />
+          WEBSITES &mdash; <span className="curve-anchor">I</span><br />
           BUILD{' '}
           <button
             type="button"

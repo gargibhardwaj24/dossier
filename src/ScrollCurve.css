@@ -1,0 +1,39 @@
+/* Wrapper around section.hero + section.roles-section. position:relative so the
+   overlay SVG can pin to the combined region. No transform here — that would
+   make it a containing block and could disturb fixed/sticky descendants. */
+.curve-region {
+  position: relative;
+}
+
+/* Overlay layer spanning the whole region. Sits above the (transparent) section
+   backgrounds but BELOW the section text/markup: it's the first child of the
+   region and uses z-index:0, so the positioned .hero / .roles-section that
+   follow it in the DOM paint on top. overflow:visible lets the ribbon exit the
+   box; pointer-events:none so it never blocks clicks. */
+.scroll-curve {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scroll-curve-path {
+  fill: none;
+  /* same cream as the headline text (--hero-fg) so the curve reads as the
+     "I" extending. stroke-width is set in JS to match the "I"'s stem; the value
+     here is only a pre-measure fallback. */
+  stroke: #efe9d8;
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hide on small screens (JS also skips building the ScrollTrigger there). */
+@media (max-width: 600px) {
+  .scroll-curve {
+    display: none;
+  }
+}
