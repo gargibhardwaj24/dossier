@@ -9,6 +9,7 @@ import Hero from './Hero';
 import FeaturedWorks from './FeaturedWorks';
 import DiveIntro from './DiveIntro';
 import Roles from './Roles';
+import ScrollCurve from './ScrollCurve';
 import Footer from './Footer';
 import IntroLoader from './IntroLoader';
 import './IntroLoader.css';
@@ -22,6 +23,7 @@ export default function App() {
   const [studioReached, setStudioReached] = useState(false);
   const studioRef = useRef(null);
   const lenisRef = useRef(null);
+  const curveRegionRef = useRef(null);
 
   useEffect(() => {
     const prev = window.history.scrollRestoration;
@@ -89,8 +91,14 @@ export default function App() {
       <main className="site-main" style={{ position: 'relative', zIndex: 1 }}>
         <HeroReveal />
         <DiveIntro />
-        <Hero />
-        <Roles ref={studioRef} />
+        {/* Wrapper spans hero + roles so the scroll-drawn curve can pin to the
+            combined region. ScrollCurve renders FIRST so its SVG paints behind
+            the section text. */}
+        <div className="curve-region" ref={curveRegionRef}>
+          <ScrollCurve regionRef={curveRegionRef} />
+          <Hero />
+          <Roles ref={studioRef} />
+        </div>
         <FeaturedWorks />
       </main>
       {/* Footer lives OUTSIDE .site-main on purpose: .site-main carries the
