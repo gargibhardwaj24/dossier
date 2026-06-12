@@ -10,6 +10,7 @@ import FeaturedWorks from './FeaturedWorks';
 import DiveIntro from './DiveIntro';
 import Roles from './Roles';
 import ScrollCurve from './ScrollCurve';
+import Contact from './Contact';
 import Footer from './Footer';
 import IntroLoader from './IntroLoader';
 import './IntroLoader.css';
@@ -100,6 +101,7 @@ export default function App() {
           <Roles ref={studioRef} />
         </div>
         <FeaturedWorks />
+        <Contact />
       </main>
       {/* Footer lives OUTSIDE .site-main on purpose: .site-main carries the
           intro `page-rise` transform, and any transformed ancestor silently

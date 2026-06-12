@@ -1,0 +1,113 @@
+.contact-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 18vh 6vw 14vh;
+  position: relative;
+  color: #efe9d8;
+}
+
+.contact-section [data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.contact-section [data-reveal].is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.contact-heading[data-reveal] {
+  transition-delay: 0.08s;
+}
+.contact-email[data-reveal] {
+  transition-delay: 0.16s;
+}
+.contact-socials[data-reveal] {
+  transition-delay: 0.24s;
+}
+
+.contact-eyebrow {
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin: 0 0 40px;
+}
+
+.contact-heading {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(44px, 8vw, 96px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: #efe9d8;
+  margin: 0 0 56px;
+}
+
+.contact-email {
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: clamp(20px, 3vw, 34px);
+  letter-spacing: -0.01em;
+  color: #efe9d8;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 6px;
+}
+.contact-email::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.contact-email:hover::after,
+.contact-email:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.contact-socials {
+  list-style: none;
+  margin: 64px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 48px);
+}
+.contact-socials a {
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #efe9d8;
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.contact-socials a:hover,
+.contact-socials a:focus-visible {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-section [data-reveal] {
+    transition: none;
+  }
+  .contact-email::after,
+  .contact-socials a {
+    transition: none;
+  }
+}
