@@ -1,12 +1,40 @@
  
-.reveal-section {
+.hero-shift {
   position: relative;
+  height: 200vh;
+}
+
+.reveal-section {
+  position: sticky;
+  top: 0;
   width: 100%;
   height: 100vh;
   height: 100svh;
   margin: 0;
   padding: 0;
   color: var(--hero-fg, #efe9d8);
+  z-index: 2;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.hero-shift + .dive-section {
+  margin-top: -100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-shift {
+    height: auto;
+  }
+  .hero-shift + .dive-section {
+    margin-top: 0;
+  }
+  .reveal-section {
+    position: relative;
+    z-index: auto;
+    transform: none !important;
+    will-change: auto;
+  }
 }
  
 .reveal {
@@ -68,8 +96,8 @@
   transition: --r 0.3s ease;
 } 
 .reveal.is-active {
-  --r: clamp(70px, 9vw, 130px);
-} 
+  --r: clamp(120px, 15vw, 220px);
+}
 .reveal-top {
   z-index: 1;
   -webkit-mask: url(#revealMask);

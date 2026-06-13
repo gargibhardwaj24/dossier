@@ -1,66 +1,113 @@
-.contact-section {
-  min-height: 100vh;
+.contact-reveal {
+  position: relative;
+}
+
+.contact-blob-wrap {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.reveal-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: url('./assets/hero_bg.png') center / cover no-repeat;
+  clip-path: circle(0px at 50% 100%);
+  -webkit-clip-path: circle(0px at 50% 100%);
+  pointer-events: none;
+  will-change: clip-path;
+}
+
+.contact-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   text-align: center;
-  padding: 18vh 6vw 14vh;
-  position: relative;
-  color: #efe9d8;
+  padding: 8vh 6vw;
+  color: #ffffff;
+  visibility: hidden;
 }
 
-.contact-section [data-reveal] {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-.contact-section [data-reveal].is-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-.contact-heading[data-reveal] {
-  transition-delay: 0.08s;
-}
-.contact-email[data-reveal] {
-  transition-delay: 0.16s;
-}
-.contact-socials[data-reveal] {
-  transition-delay: 0.24s;
+.cr-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 28px;
 }
 
-.contact-eyebrow {
+.cr-avatar {
+  width: clamp(64px, 8vw, 92px);
+  height: clamp(64px, 8vw, 92px);
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 0 28px;
+  user-select: none;
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.12);
+}
+
+.cr-eyebrow {
   font-family: 'Archivo', system-ui, sans-serif;
   font-size: 13px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  opacity: 0.7;
-  margin: 0 0 40px;
+  color: rgba(14, 14, 16, 0.62);
+  margin: 0 0 18px;
 }
 
-.contact-heading {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
+.cr-heading {
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-weight: 600;
   font-size: clamp(44px, 8vw, 96px);
   line-height: 1.02;
   letter-spacing: -0.02em;
-  color: #efe9d8;
-  margin: 0 0 56px;
+  color: #ffffff;
+  margin: 0 0 40px;
+  text-align: left;
 }
 
-.contact-email {
+.cr-rotate {
+  display: inline-block;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  animation: crWordIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes crWordIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.28em) rotate(-2deg);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cr-rotate {
+    animation: none;
+  }
+}
+
+.cr-email {
   font-family: 'Archivo', system-ui, sans-serif;
   font-size: clamp(20px, 3vw, 34px);
   letter-spacing: -0.01em;
-  color: #efe9d8;
+  color: #ffffff;
   text-decoration: none;
   position: relative;
   padding-bottom: 6px;
 }
-.contact-email::after {
+.cr-email::after {
   content: '';
   position: absolute;
   left: 0;
@@ -72,42 +119,40 @@
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.contact-email:hover::after,
-.contact-email:focus-visible::after {
+.cr-email:hover::after,
+.cr-email:focus-visible::after {
   transform: scaleX(1);
 }
 
-.contact-socials {
+.cr-socials {
   list-style: none;
-  margin: 64px 0 0;
+  margin: 0;
   padding: 0;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(20px, 4vw, 48px);
+  justify-content: flex-end;
+  gap: 22px;
 }
-.contact-socials a {
-  font-family: 'Archivo', system-ui, sans-serif;
-  font-size: 13px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #efe9d8;
+.cr-socials a {
+  display: inline-flex;
+  color: #ffffff;
   text-decoration: none;
   opacity: 0.7;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
-.contact-socials a:hover,
-.contact-socials a:focus-visible {
+.cr-socials a:hover,
+.cr-socials a:focus-visible {
   opacity: 1;
   transform: translateY(-2px);
 }
+.cr-socials svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .contact-section [data-reveal] {
-    transition: none;
-  }
-  .contact-email::after,
-  .contact-socials a {
+  .cr-email::after,
+  .cr-socials a {
     transition: none;
   }
 }

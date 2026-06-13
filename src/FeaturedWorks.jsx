@@ -16,7 +16,7 @@ const PROJECTS = [
   { seed: 'ember',   title: 'Ember',    tag: 'Product · Web',   span: 'big' },
 ];
 
-function Slide({ seed, title, tag, span }) {
+function Slide({ seed, title, tag, span, side = 'left' }) {
   // Bigger source for full-width slides, narrower for the 2-up row.
   const src =
     span === 'big'
@@ -29,7 +29,11 @@ function Slide({ seed, title, tag, span }) {
       ? `https://picsum.photos/seed/${seed}/64/36`
       : `https://picsum.photos/seed/${seed}/40/44`;
   return (
-    <a className={`proj-slide proj-slide--${span}`} href="#" onClick={(e) => e.preventDefault()}>
+    <a
+      className={`proj-slide proj-slide--${span} proj-slide--from-${side}`}
+      href="#"
+      onClick={(e) => e.preventDefault()}
+    >
       <img src={src} alt={`${title} — ${tag}`} loading="lazy" draggable="false" />
       <img
         className="proj-img-px"
@@ -78,16 +82,16 @@ const FeaturedWorks = forwardRef(function FeaturedWorks(_props, ref) {
 
       <div className="fw-projects" ref={projectsRef}>
         {/* 1 big slide */}
-        <Slide {...PROJECTS[0]} />
+        <Slide {...PROJECTS[0]} side="left" />
 
         {/* 2 slides adjacent, below it */}
         <div className="proj-row">
-          <Slide {...PROJECTS[1]} />
-          <Slide {...PROJECTS[2]} />
+          <Slide {...PROJECTS[1]} side="left" />
+          <Slide {...PROJECTS[2]} side="right" />
         </div>
 
         {/* then another 2 big slides */}
-        <Slide {...PROJECTS[3]} />
+        <Slide {...PROJECTS[3]} side="right" />
         {/* <Slide {...PROJECTS[4]} /> */}
       </div>
     </section>

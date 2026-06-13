@@ -66,7 +66,6 @@
   white-space: nowrap;
 
   color: #efe9d8;
-  /* soft glow keeps the wordmark legible over any frame of the moving bg */
   text-shadow: 0 2px 56px rgba(0, 0, 0, 0.45);
 
   /* Pivot the vertical stretch at the BASELINE (not the border-box bottom).

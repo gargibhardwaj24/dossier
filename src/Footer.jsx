@@ -70,7 +70,7 @@ export default function Footer() {
           ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top top",
+            start: "top bottom",
             end: "bottom bottom",
             scrub: true,
             invalidateOnRefresh: true,

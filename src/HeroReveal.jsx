@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import jacketImg from './assets/jacket.jpg';
-import heroImg from './assets/hero.jpg';
+import heroImg from './assets/hero.png';
 import './HeroReveal.css';
 
 
@@ -17,6 +17,42 @@ export default function HeroReveal() {
     m.addEventListener('change', sync);
     return () => m.removeEventListener('change', sync);
   }, []);
+
+  useEffect(() => {
+    if (reduce) return;
+    const section = stageRef.current?.parentElement;
+    const runway = section?.parentElement;
+    if (!section || !runway) return;
+    const diveSticky = runway.nextElementSibling?.querySelector('.dive-sticky');
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      const pinDist = Math.max(1, runway.offsetHeight - vh);
+      const p = Math.min(1, Math.max(0, -runway.getBoundingClientRect().top / pinDist));
+      const e = 1 - (1 - p) * (1 - p);
+      section.style.transform = `translateY(${(-e * 100).toFixed(3)}%)`;
+      section.style.pointerEvents = p > 0.98 ? 'none' : '';
+      if (diveSticky) {
+        diveSticky.style.transform = p < 1 ? `translateY(${((p - e) * vh).toFixed(2)}px)` : '';
+      }
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', update);
+      if (raf) cancelAnimationFrame(raf);
+      section.style.transform = '';
+      section.style.pointerEvents = '';
+      if (diveSticky) diveSticky.style.transform = '';
+    };
+  }, [reduce]);
 
   const setPos = useCallback((clientX, clientY) => {
     const el = stageRef.current;

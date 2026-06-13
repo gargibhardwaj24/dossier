@@ -89,8 +89,11 @@ export default function App() {
       {showIntro && <IntroLoader onComplete={() => setShowIntro(false)} />}
       <ScrollBackground zoomed={studioReached} />
       <FixedVideoBg />
+      <div className="reveal-bg" aria-hidden="true" />
       <main className="site-main" style={{ position: 'relative', zIndex: 1 }}>
-        <HeroReveal />
+        <div className="hero-shift">
+          <HeroReveal />
+        </div>
         <DiveIntro />
         {/* Wrapper spans hero + roles so the scroll-drawn curve can pin to the
             combined region. ScrollCurve renders FIRST so its SVG paints behind
