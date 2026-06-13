@@ -6,7 +6,7 @@ import './Contact.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const EMAIL = 'hello@gargibhardwaj.com';
+const EMAIL = 'gargibhardwaj2430@gmail.com';
 
 const WORDS = ['impact', 'visions', 'systems', 'ideas'];
 
@@ -34,10 +34,10 @@ const ICONS = {
 };
 
 const SOCIALS = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
-  { label: 'GitHub', href: 'https://github.com/' },
-  { label: 'Instagram', href: 'https://www.instagram.com/' },
-  { label: 'Twitter', href: 'https://twitter.com/' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/gargibhardwaj24' },
+  { label: 'GitHub', href: 'https://github.com/gargibhardwaj24' },
+  { label: 'Instagram', href: 'https://www.instagram.com/gargiscrazyy' },
+  { label: 'Twitter', href: 'https://twitter.com/gargiiscrazyy' },
 ];
 
 export default function Contact() {

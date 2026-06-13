@@ -99,7 +99,7 @@
 }
 
 .cr-email {
-  font-family: 'Archivo', system-ui, sans-serif;
+  font-family: 'Instrument Serif', system-ui, sans-serif;
   font-size: clamp(20px, 3vw, 34px);
   letter-spacing: -0.01em;
   color: #ffffff;
