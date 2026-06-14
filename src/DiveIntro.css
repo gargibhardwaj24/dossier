@@ -1,6 +1,6 @@
 .dive-section {
   position: relative;
-  height: 480vh;
+  height: 240vh;
   --dive-progress: 0;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -28,6 +28,7 @@
   object-position: center;
   display: block;
   user-select: none;
+  transform: rotate(180deg);
   opacity: calc(min(1, max(0, (0.20 - var(--dive-progress)) / 0.06)));
   transition: opacity 0.15s var(--ease-out);
 }
@@ -162,7 +163,7 @@
 }
 
 @media (max-width: 720px) {
-  .dive-section { height: 400vh; } 
+  .dive-section { height: 220vh; }
   .dive-journey-title { font-size: clamp(36px, 11vw, 72px); }
 }
 

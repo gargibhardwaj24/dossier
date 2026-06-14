@@ -98,8 +98,19 @@
   inset: 0;
   background: radial-gradient(120% 90% at 50% 50%,
                 transparent 55%,
-                
+
                 rgba(60, 45, 30, 0.20) 100%);
+}
+
+.sb-cover {
+  position: absolute;
+  inset: 0;
+  background: #0a0810;
+  opacity: 1;
+  transition: opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sb-revealed .sb-cover {
+  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -10,6 +10,7 @@ import FeaturedWorks from './FeaturedWorks';
 import DiveIntro from './DiveIntro';
 import Roles from './Roles';
 import ScrollCurve from './ScrollCurve';
+import Contact from './Contact';
 import Footer from './Footer';
 import IntroLoader from './IntroLoader';
 import './IntroLoader.css';
@@ -88,8 +89,11 @@ export default function App() {
       {showIntro && <IntroLoader onComplete={() => setShowIntro(false)} />}
       <ScrollBackground zoomed={studioReached} />
       <FixedVideoBg />
+      <div className="reveal-bg" aria-hidden="true" />
       <main className="site-main" style={{ position: 'relative', zIndex: 1 }}>
-        <HeroReveal />
+        <div className="hero-shift">
+          <HeroReveal />
+        </div>
         <DiveIntro />
         {/* Wrapper spans hero + roles so the scroll-drawn curve can pin to the
             combined region. ScrollCurve renders FIRST so its SVG paints behind
@@ -100,6 +104,7 @@ export default function App() {
           <Roles ref={studioRef} />
         </div>
         <FeaturedWorks />
+        <Contact />
       </main>
       {/* Footer lives OUTSIDE .site-main on purpose: .site-main carries the
           intro `page-rise` transform, and any transformed ancestor silently
