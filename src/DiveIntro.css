@@ -1,6 +1,7 @@
 .dive-section {
   position: relative;
   height: 240vh;
+  z-index: 2;
   --dive-progress: 0;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
