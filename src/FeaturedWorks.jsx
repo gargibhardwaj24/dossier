@@ -1,5 +1,9 @@
 import { forwardRef, useEffect, useRef } from 'react';
 import VariableFontText from './VariableFontText';
+import cursorVid from './assets/creative.mp4';
+import hushMeet from './assets/hushMeet.mp4';
+import nanofacts from './assets/nanoFactz.png';
+import procrastinator from './assets/procrastinator.png';
 import './FeaturedWorks.css';
 
 const prefersReducedMotion =
@@ -9,40 +13,45 @@ const prefersReducedMotion =
 // Placeholder images via picsum.photos (swap these out for real project shots).
 // `span` controls layout: 'big' = full-width slide, 'half' = sits in a 2-up row.
 const PROJECTS = [
-  { seed: 'aurora',  title: 'Aurora',   tag: 'Brand · Web',     span: 'big' },
-  { seed: 'meridian', title: 'Meridian', tag: 'Identity',        span: 'half' },
-  { seed: 'cobalt',  title: 'Cobalt',   tag: 'Motion',          span: 'half' },
-  { seed: 'verde',   title: 'Verde',    tag: 'Art Direction',   span: 'big' },
-  { seed: 'ember',   title: 'Ember',    tag: 'Product · Web',   span: 'big' },
+  { seed: 'aurora',  span: 'big', video: cursorVid },
+  { seed: 'procrastinator', span: 'half', photo: procrastinator, fit: 'contain' },
+  { seed: 'nanofacts',      span: 'half', photo: nanofacts },
+  { seed: 'verde',   span: 'big', video: hushMeet },
+  { seed: 'ember',   span: 'big' },
 ];
 
-function Slide({ seed, title, tag, span, side = 'left' }) {
+function Slide({ seed, title, tag, span, side = 'left', video, photo, fit }) {
   // Bigger source for full-width slides, narrower for the 2-up row.
   const src =
     span === 'big'
       ? `https://picsum.photos/seed/${seed}/1600/900`
       : `https://picsum.photos/seed/${seed}/900/1000`;
-  // Tiny same-seed source — scaled up with image-rendering:pixelated it becomes
-  // a blocky version of the exact same photo, crossfaded in on hover.
-  const pxSrc =
-    span === 'big'
-      ? `https://picsum.photos/seed/${seed}/64/36`
-      : `https://picsum.photos/seed/${seed}/40/44`;
   return (
     <a
-      className={`proj-slide proj-slide--${span} proj-slide--from-${side}`}
+      className={`proj-slide proj-slide--${span} proj-slide--from-${side}${
+        fit === 'contain' ? ' proj-slide--contain' : ''
+      }`}
       href="#"
       onClick={(e) => e.preventDefault()}
     >
-      <img src={src} alt={`${title} — ${tag}`} loading="lazy" draggable="false" />
-      <img
-        className="proj-img-px"
-        src={pxSrc}
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        draggable="false"
-      />
+      {video ? (
+        <video
+          src={video}
+          autoPlay
+          loop
+          muted
+          playsInline
+          draggable="false"
+          aria-label={`${title} — ${tag}`}
+        />
+      ) : (
+        <img
+          src={photo || src}
+          alt={`${title} — ${tag}`}
+          loading="lazy"
+          draggable="false"
+        />
+      )}
       <div className="proj-meta">
         <span className="proj-title">{title}</span>
         <span className="proj-tag">{tag}</span>
