@@ -23,7 +23,6 @@ export default function HeroReveal() {
     const section = stageRef.current?.parentElement;
     const runway = section?.parentElement;
     if (!section || !runway) return;
-    const diveSticky = runway.nextElementSibling?.querySelector('.dive-sticky');
 
     let raf = 0;
     const update = () => {
@@ -31,12 +30,10 @@ export default function HeroReveal() {
       const vh = window.innerHeight;
       const pinDist = Math.max(1, runway.offsetHeight - vh);
       const p = Math.min(1, Math.max(0, -runway.getBoundingClientRect().top / pinDist));
-      const e = 1 - (1 - p) * (1 - p);
-      section.style.transform = `translateY(${(-e * 100).toFixed(3)}%)`;
-      section.style.pointerEvents = p > 0.98 ? 'none' : '';
-      if (diveSticky) {
-        diveSticky.style.transform = p < 1 ? `translateY(${((p - e) * vh).toFixed(2)}px)` : '';
-      }
+      const e = p * p;
+      section.style.filter = `brightness(${(1 - e * 0.55).toFixed(3)})`;
+      section.style.visibility = p >= 1 ? 'hidden' : 'visible';
+      section.style.pointerEvents = p > 0.5 ? 'none' : '';
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -49,8 +46,9 @@ export default function HeroReveal() {
       window.removeEventListener('resize', update);
       if (raf) cancelAnimationFrame(raf);
       section.style.transform = '';
+      section.style.filter = '';
+      section.style.visibility = '';
       section.style.pointerEvents = '';
-      if (diveSticky) diveSticky.style.transform = '';
     };
   }, [reduce]);
 

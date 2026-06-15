@@ -7,13 +7,12 @@
   align-items: center;
   justify-content: center;
   background: #040404;
-  animation: intro-lift 1000ms cubic-bezier(0.76, 0, 0.24, 1) 3700ms forwards;
+  animation: intro-lift 1100ms cubic-bezier(0.76, 0, 0.24, 1) 3700ms forwards;
 }
 
 @keyframes intro-lift {
   to {
     transform: translateY(-100%);
-    opacity: 0;
   }
 }
 
@@ -63,17 +62,15 @@
      intro finishes. A lingering transform here (even the identity translateY(0)
      that `both`/`forwards` would retain) makes .site-main a containing block,
      which silently breaks `position: sticky` on the footer panel inside it. */
-  animation: page-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) 3700ms backwards;
+  animation: page-rise 1100ms cubic-bezier(0.76, 0, 0.24, 1) 3700ms backwards;
 }
 
 @keyframes page-rise {
   from {
     transform: translateY(100vh);
-    opacity: 0;
   }
   to {
     transform: translateY(0);
-    opacity: 1;
   }
 }
 

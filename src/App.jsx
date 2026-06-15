@@ -27,12 +27,8 @@ export default function App() {
   const curveRegionRef = useRef(null);
 
   useEffect(() => {
-    const prev = window.history.scrollRestoration;
     window.history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-    return () => {
-      window.history.scrollRestoration = prev;
-    };
   }, []);
 
   useEffect(() => {

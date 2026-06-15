@@ -13,8 +13,8 @@
   margin: 0;
   padding: 0;
   color: var(--hero-fg, #efe9d8);
-  z-index: 2;
-  will-change: transform;
+  z-index: 1;
+  will-change: filter;
   backface-visibility: hidden;
 }
 
@@ -33,6 +33,7 @@
     position: relative;
     z-index: auto;
     transform: none !important;
+    filter: none !important;
     will-change: auto;
   }
 }
