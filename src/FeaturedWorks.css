@@ -83,7 +83,8 @@
   height: clamp(300px, 56vh, 680px);
 }
 
-.proj-slide img {
+.proj-slide img,
+.proj-slide video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -92,21 +93,20 @@
   display: block;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.proj-slide:hover img {
+.proj-slide:hover img,
+.proj-slide:hover video {
   transform: scale(1.04);
 }
 
-.proj-img-px {
-  opacity: 0;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges; 
-  image-rendering: pixelated;
-  transition: opacity 0.28s ease-out,
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+/* Screenshots (e.g. wide app captures in a narrow slide) — show the whole
+   frame instead of cropping the sides off. */
+.proj-slide--contain {
+  background: #e7efdf;
 }
-.proj-slide:hover .proj-img-px {
-  opacity: 1;
+.proj-slide--contain img {
+  object-fit: contain;
 }
+
 .proj-meta {
   position: absolute;
   left: 0;
