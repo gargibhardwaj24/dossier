@@ -117,13 +117,39 @@ export default function Hero() {
     e.preventDefault();
     setMenuOpen(false);
     const id = href.replace('#', '');
-    const target = id === 'top' ? document.body : document.getElementById(id);
-    // wait for the close transition to start, then jump to the section
+
+    const scrollToY = (y) => {
+      const lenis = window.__lenis;
+      if (lenis) lenis.scrollTo(y, { duration: 1.2 });
+      else window.scrollTo({ top: y, behavior: 'smooth' });
+    };
+
+    // wait for the close transition to start, then go to the section
     setTimeout(() => {
       if (id === 'top') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToY(0);
+        return;
+      }
+
+      // The contact section is pinned and its panel only fades in partway
+      // through a +=130% scrub. Scrolling to the panel's DOM position lands
+      // on it while still invisible — instead aim near the end of the pin so
+      // the reveal has played and the panel is fully visible.
+      if (id === 'contact') {
+        const wrap = document.querySelector('.contact-blob-wrap');
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (wrap) {
+          const start = wrap.getBoundingClientRect().top + window.scrollY;
+          const y = reduce ? start : start + window.innerHeight * 1.3 * 0.95;
+          scrollToY(y);
+          return;
+        }
+      }
+
+      const target = document.getElementById(id);
+      if (target) {
+        const y = target.getBoundingClientRect().top + window.scrollY;
+        scrollToY(y);
       }
     }, 120);
   };
@@ -151,7 +177,7 @@ export default function Hero() {
         </a>
 
         <div className="nav-right">
-          <a href="#contact" className="nav-btn nav-chat">
+          <a href="#contact" className="nav-btn nav-chat" onClick={handleMenuNav('#contact')}>
             <span>Let&rsquo;s chat</span>
             <span className="nav-arrow" aria-hidden="true">&rarr;</span>
           </a>
