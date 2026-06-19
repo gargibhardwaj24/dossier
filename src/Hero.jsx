@@ -249,7 +249,14 @@ export default function Hero() {
         </nav>
 
         <div className="menu-contact" style={{ '--menu-i': MENU_LINKS.length }}>
-          <span className="menu-contact-label">Reach out to me</span>
+          <a
+            href="#contact"
+            className="menu-contact-label"
+            onClick={handleMenuNav('#contact')}
+            tabIndex={menuOpen ? 0 : -1}
+          >
+            Reach out to me
+          </a>
           <a
             href="mailto:gargibhardwaj2430@gmail.com"
             className="menu-contact-email"
