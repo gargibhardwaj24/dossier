@@ -61,6 +61,9 @@ export default function App() {
       // expo ease-out — strong, settles smoothly
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      // smooth-scroll in-page hash links (e.g. "Let's chat" → #contact) through
+      // Lenis instead of letting the native jump fight it.
+      anchors: true,
     });
     lenisRef.current = lenis;
     window.__lenis = lenis;

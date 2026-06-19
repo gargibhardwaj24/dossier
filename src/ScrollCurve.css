@@ -27,7 +27,9 @@
      here is only a pre-measure fallback. */
   stroke: #efe9d8;
   stroke-width: 12;
-  stroke-linecap: round;
+  /* butt (not round) so the stroke starts flush with the "I"'s flat bottom and
+     reads as the letter extending — a round cap adds a pill/bulb below it. */
+  stroke-linecap: butt;
   stroke-linejoin: round;
 }
 
