@@ -184,7 +184,7 @@ const FeaturedWorks = forwardRef(function FeaturedWorks(_props, ref) {
   }, []);
 
   return (
-    <section ref={ref} className="fw-section" aria-label="Featured Works">
+    <section ref={ref} className="fw-section" id="projects" aria-label="Featured Works">
       <VariableFontText as="h2" className="fw-heading" text="Featured Works" />
 
       <div className="fw-projects" ref={projectsRef}>

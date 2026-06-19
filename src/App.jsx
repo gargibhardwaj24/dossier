@@ -66,6 +66,7 @@ export default function App() {
       anchors: true,
     });
     lenisRef.current = lenis;
+    window.__lenis = lenis;
     lenis.scrollTo(0, { immediate: true });
     // Drive ScrollTrigger off Lenis' interpolated position so scrub-based
     // reveals (e.g. the footer wordmark) track the smooth scroll exactly.
@@ -80,6 +81,7 @@ export default function App() {
       lenis.off('scroll', ScrollTrigger.update);
       lenis.destroy();
       lenisRef.current = null;
+      window.__lenis = null;
     };
   }, [showIntro]);
 

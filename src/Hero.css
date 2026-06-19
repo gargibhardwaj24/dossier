@@ -271,6 +271,159 @@
 }
 .hero-modal-close:hover { background: rgba(255, 255, 255, 0.18); }
 
+/* ---------- rising menu overlay ---------- */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: #e9e2d1;
+  color: #1c1812;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 7vh 7vw;
+
+  /* page rises up from the bottom; on close it drops back down */
+  transform: translateY(100%);
+  transition: transform 0.72s cubic-bezier(0.76, 0, 0.24, 1),
+    visibility 0s linear 0.72s;
+  will-change: transform;
+  pointer-events: none;
+  visibility: hidden;
+}
+.menu-overlay.is-open {
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition: transform 0.72s cubic-bezier(0.76, 0, 0.24, 1),
+    visibility 0s linear 0s;
+}
+
+.menu-close {
+  position: absolute;
+  top: 30px;
+  right: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 6px 2px;
+  cursor: pointer;
+  color: inherit;
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.menu-close-x { font-size: 22px; line-height: 1; }
+
+.menu-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* entrance (rise + stagger) lives on the <li> so it never interferes
+   with the link's hover transition */
+.menu-nav li {
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.75s ease;
+  transition-delay: calc(0.06s * var(--menu-i, 0));
+}
+.menu-overlay.is-open .menu-nav li {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: calc(0.16s + 0.07s * var(--menu-i, 0));
+}
+
+.menu-link {
+  display: inline-block;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(56px, 12vw, 150px);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: inherit;
+  text-decoration: none;
+
+  /* hover: constant, delay-free transition — matches the Roles list */
+  opacity: 0.85;
+  transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* hover one item → blur the rest (links + contact), like Roles */
+.menu-nav:hover .menu-link,
+.menu-nav:focus-within .menu-link {
+  opacity: 0.35;
+  filter: blur(4px);
+}
+.menu-nav .menu-link:hover,
+.menu-nav .menu-link:focus-visible {
+  opacity: 1;
+  filter: blur(0) drop-shadow(0 6px 30px rgba(0, 0, 0, 0.25));
+  transform: scale(1.04);
+}
+.menu-overlay:has(.menu-nav:hover) .menu-contact,
+.menu-overlay:has(.menu-nav:focus-within) .menu-contact {
+  opacity: 0.4;
+  filter: blur(3px);
+  transition-delay: 0s;
+}
+
+.menu-contact {
+  margin-top: clamp(40px, 7vh, 90px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+
+  transform: translateY(40px);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.7s ease,
+    filter 0.4s ease;
+}
+.menu-overlay.is-open .menu-contact {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: calc(0.16s + 0.07s * var(--menu-i, 0));
+}
+.menu-contact-label {
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+.menu-contact-label:hover { opacity: 1; }
+.menu-contact-email {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(24px, 4vw, 44px);
+  color: inherit;
+  text-decoration: none;
+  width: fit-content;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s ease;
+}
+.menu-contact-email:hover { border-color: currentColor; }
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-overlay,
+  .menu-link,
+  .menu-contact {
+    transition-duration: 0.001s;
+  }
+}
+
 /* ---------- mobile ---------- */
 @media (max-width: 720px) {
   .site-nav { padding: 20px 18px; }
@@ -278,4 +431,6 @@
   .hero-since { top: auto; bottom: 110px; transform: none; }
   .hero-headline { font-size: clamp(40px, 11vw, 80px); }
   .hero-lang { font-size: 11px; }
+  .menu-overlay { padding: 12vh 8vw; }
+  .menu-close { top: 20px; right: 18px; }
 }
