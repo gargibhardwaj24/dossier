@@ -347,7 +347,7 @@
   font-size: clamp(56px, 12vw, 150px);
   line-height: 1.04;
   letter-spacing: -0.01em;
-  color: inherit;
+  color: #e0531f;
   text-decoration: none;
 
   /* hover: constant, delay-free transition — matches the Roles list */
