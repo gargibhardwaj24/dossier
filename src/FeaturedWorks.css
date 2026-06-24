@@ -83,54 +83,196 @@
   height: clamp(300px, 56vh, 680px);
 }
 
-.proj-slide img {
+.proj-slide img,
+.proj-slide video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.6s ease;
 }
-.proj-slide:hover img {
-  transform: scale(1.04);
+.proj-slide:hover img,
+.proj-slide:hover video {
+  transform: scale(1.06);
+  filter: saturate(1.08);
 }
 
-.proj-img-px {
-  opacity: 0;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges; 
-  image-rendering: pixelated;
-  transition: opacity 0.28s ease-out,
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+/* Videos play in full only when clicked. */
+.proj-video {
+  cursor: pointer;
 }
-.proj-slide:hover .proj-img-px {
+
+/* Screenshots (e.g. wide app captures in a narrow slide) — show the whole
+   frame instead of cropping the sides off. */
+.proj-slide--contain {
+  background: #e7efdf;
+}
+.proj-slide--contain img {
+  object-fit: contain;
+}
+
+/* Darken the media on hover so the rising text reads clearly — a flat veil
+   plus a stronger gradient scrim at the bottom for the text. */
+.proj-slide::before,
+.proj-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.proj-slide::after {
+  background: rgba(0, 0, 0, 0.42);
+  z-index: 1;
+}
+.proj-slide::before {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent 62%);
+  z-index: 1;
+}
+.proj-slide:hover::after,
+.proj-slide:hover::before {
   opacity: 1;
 }
-.proj-meta {
+
+/* Text box that rises up from the bottom on hover — no background.
+   Children stagger in one after another. */
+.proj-info {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 22px 26px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 26px 28px;
+  color: #efe9d8;
+  /* Whole block starts fully below the frame edge and rises up into view
+     (the slide clips it via overflow:hidden). */
+  transform: translateY(110%);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Let clicks fall through to the video underneath; only the links catch. */
+  pointer-events: none;
 }
-.proj-title {
+.proj-links a {
+  pointer-events: auto;
+}
+.proj-slide:hover .proj-info {
+  transform: translateY(0);
+}
+/* Every revealing child shares the same rising/fading motion; delays below
+   create the stagger. */
+.proj-line,
+.proj-name,
+.proj-desc,
+.proj-links {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.proj-slide:hover .proj-line,
+.proj-slide:hover .proj-name,
+.proj-slide:hover .proj-desc,
+.proj-slide:hover .proj-links {
+  opacity: 1;
+  transform: translateY(0);
+}
+.proj-slide:hover .proj-line  { transition-delay: 0.04s; }
+.proj-slide:hover .proj-name  { transition-delay: 0.12s; }
+.proj-slide:hover .proj-desc  { transition-delay: 0.20s; }
+.proj-slide:hover .proj-links { transition-delay: 0.28s; }
+
+/* White horizontal line that rises in above the text. */
+.proj-line {
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-bottom: 4px;
+  background: #fff;
+}
+
+.proj-name {
+  margin: 0;
   font-family: 'Instrument Serif', Georgia, serif;
   font-style: italic;
-  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 400;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.05;
 }
-.proj-tag {
+.proj-desc {
+  margin: 0;
+  max-width: 46ch;
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: clamp(13px, 1vw, 15px);
+  line-height: 1.45;
+}
+.proj-slide:hover .proj-desc { opacity: 0.88; }
+.proj-links {
+  display: flex;
+  gap: 22px;
+  margin-top: 4px;
+}
+.proj-links a {
   font-family: 'Archivo', system-ui, sans-serif;
   font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  opacity: 0.75;
+  color: #efe9d8;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(239, 233, 216, 0.35);
+  transition: border-color 0.3s ease, opacity 0.3s ease;
 }
+.proj-links a:hover {
+  border-color: #efe9d8;
+}
+
+/* Fullscreen video — opens on click, plays with sound. */
+.fw-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  cursor: zoom-out;
+  animation: fwModalIn 0.25s ease;
+}
+@keyframes fwModalIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fw-modal video {
+  width: min(92vw, 1600px);
+  max-height: 88vh;
+  object-fit: contain;
+  background: #000;
+  border-radius: 6px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  cursor: default;
+}
+.fw-modal-close {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #efe9d8;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.fw-modal-close:hover { background: rgba(255, 255, 255, 0.18); }
 
 @media (max-width: 720px) {
   .proj-row { grid-template-columns: 1fr; }

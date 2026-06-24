@@ -177,7 +177,7 @@ export default function Hero() {
         </a>
 
         <div className="nav-right">
-          <a href="#contact" className="nav-btn nav-chat" onClick={handleMenuNav('#contact')}>
+          <a href="#Contact" className="nav-btn nav-chat">
             <span>Let&rsquo;s chat</span>
             <span className="nav-arrow" aria-hidden="true">&rarr;</span>
           </a>

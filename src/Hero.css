@@ -79,15 +79,13 @@
   text-transform: uppercase;
   color: var(--hero-fg);
 
-  /* progressive blur + upward parallax driven by scroll
-     (--hero-blur: 0 = sharp & in place, 1 = max blur, lifted off, faded) */
-  --hero-blur-max: 14px;
+  /* upward parallax + fade driven by scroll — no blur, so the "I" stays crisp
+     as the curve extends from it (--hero-blur: 0 = in place, 1 = lifted, faded) */
   --hero-lift-max: 55vh;
-  filter: blur(calc(var(--hero-blur, 0) * var(--hero-blur-max)));
   transform: translateY(calc(var(--hero-blur, 0) * var(--hero-lift-max) * -1));
   opacity: calc(1 - var(--hero-blur, 0) * 0.95);
-  transition: filter 0.12s linear, transform 0.12s linear, opacity 0.12s linear;
-  will-change: filter, transform, opacity;
+  transition: transform 0.12s linear, opacity 0.12s linear;
+  will-change: transform, opacity;
 }
 .hero-since {
   filter: blur(calc(var(--hero-blur, 0) * 6px));

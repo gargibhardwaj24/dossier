@@ -157,7 +157,7 @@ export default function ScrollCurve({ regionRef }) {
             // from the top of the region (which you scroll past well before the
             // "I" is in view — that's why it looked already-drawn).
             trigger: anchor,
-            start: 'top center', // begins as the "I" reaches viewport center
+            start: 'top 18%', // begins once the "I" has scrolled up near the top
             endTrigger: roles || region,
             end: 'bottom center', // finishes as the roles section passes center
             scrub: true,
