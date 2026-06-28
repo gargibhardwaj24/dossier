@@ -277,14 +277,14 @@
   inset: 0;
   z-index: 150;
   background: #e9e2d1;
-  color: #1c1812;
+  color: #f97b0c;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 7vh 7vw;
-
+  /* font-family: 'Archivo', system-ui, sans-serif; */
   /* page rises up from the bottom; on close it drops back down */
   transform: translateY(100%);
   transition: transform 0.72s cubic-bezier(0.76, 0, 0.24, 1),
@@ -342,7 +342,7 @@
 
 .menu-link {
   display: inline-block;
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: 'Archivo', Georgia, serif;
   font-weight: 400;
   font-size: clamp(56px, 12vw, 150px);
   line-height: 1.04;
@@ -405,6 +405,7 @@
 }
 .menu-contact-label:hover { opacity: 1; }
 .menu-contact-email {
+  color: black;
   font-family: 'Instrument Serif', Georgia, serif;
   font-style: italic;
   font-size: clamp(24px, 4vw, 44px);
